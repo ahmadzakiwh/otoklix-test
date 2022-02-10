@@ -1,0 +1,19 @@
+.btn-add {
+    background-color: navy;
+    color: white;
+}
+.btn-add:hover {
+    color: black;
+    background-color: transparent;
+    border: 1px solid navy;
+}
+.postsCard {
+    box-shadow: 2px 3px 3px midnightblue;
+    border-radius: 5px;
+    background-color: aliceblue;
+    font-family: 'Roboto';
+    text-align: justify;
+}
+.postsCard h3 {
+    font-family: "Josefin Sans";
+}
