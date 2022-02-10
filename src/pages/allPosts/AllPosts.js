@@ -4,11 +4,13 @@ import "./styles.css"
 import SearchBar from '../../components/search/SearchBar';
 import Create from '../../components/create/Create';
 
-
 function AllPosts() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchterm, setSearchTerm] = useState("")
+  const [show, setShow] = useState(false)
+  const handleClose = () => setShow(false)
+  const handleShow = () => setShow(true)
 
   useEffect(() => {
     getAllPosts();
@@ -20,7 +22,6 @@ function AllPosts() {
       .then((res) => {
         const results = res.data;
         setPosts(results)
-        console.log(results)
       })
       .catch((err) => {
         console.log(err);
@@ -41,25 +42,21 @@ function AllPosts() {
       <div className='container'>
         <div className='d-flex justify-content-between'>
           <SearchBar onChange={(event) => {setSearchTerm(event.target.value)}}/>
-          <button className='btn btn-add ms-3' type='submit' data-bs-toggle="modal" data-bs-target="#staticBackdrop">ADD+</button>
-          <Create />
+          <button className='btn btn-add ms-3' type='button' onClick={handleShow}>ADD+</button>
+          <Create 
+            show={show}
+            onHide={handleClose}
+            getAllPosts={getAllPosts}
+          />
         </div>
-        {posts.filter((val, item) => {
+        {posts.filter((val) => {
           if (searchterm === "") {
             return val
           } else if (val.title.toLowerCase().includes(searchterm.toLowerCase())) {
-            return (
-              <div className='postsCard p-4 mt-3' key={item.id}>
-                <h6><small>id : </small>{item.id}</h6>
-                <h3>{item.title}</h3>
-                <small>{item.content}</small>
-                <div className='d-flex justify-content-end'>
-                  <button onClick={() => handleEdit(item.id)} className='btn btn-outline-primary me-2' type='button'>Edit</button>
-                  <button onClick={() => handleDelete(item.id)} className='btn btn-outline-danger' type='button'>Delete</button>
-                </div>
-              </div>
-            )
+            return val
           }
+        }).sort((a, b) => {
+          return a.id - b.id
         }).map((item) => {
           return (
             <div className='postsCard p-4 mt-3' key={item.id}>
