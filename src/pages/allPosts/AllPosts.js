@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import React, { useState, useEffect } from 'react'
 import axios from "axios";
 import "./styles.css"
@@ -67,26 +68,26 @@ function AllPosts() {
           } else if (val.title.toLowerCase().includes(searchterm.toLowerCase())) {
             return val
           }
-        }).sort((a, b) => {
-          return a.id - b.id
-        }).map((item) => {
-          return (
-            <div className='postsCard p-4 mt-3' key={item.id}>
-              <h3>{item.title}</h3>
-              <small>{item.content}</small>
-              <div className='d-flex justify-content-end mt-3'>
-                <button onClick={() => handleShowEdit(item.id)} className='btn btn-outline-primary me-2' type='button'>Edit</button>
-                <button onClick={(e) => handleDelete(item.id, e)} className='btn btn-outline-danger' type='button'>Delete</button>
+          }).sort((a, b) => {
+            return a.id - b.id
+          }).map((item) => {
+            return (
+              <div className='postsCard p-4 mt-3' key={item.id}>
+                <h3>{item.title}</h3>
+                <small>{item.content}</small>
+                <div className='d-flex justify-content-end mt-3'>
+                  <button onClick={() => handleShowEdit(item.id)} className='btn btn-outline-primary me-2' type='button'>Edit</button>
+                  <button onClick={(e) => handleDelete(item.id, e)} className='btn btn-outline-danger' type='button'>Delete</button>
+                </div>
               </div>
-            </div>
-          )
-        })}
-        <Edit
-          show={showEdit}
-          onHide={handleCloseEdit}
-          selectId={selectId}
-          getAllPosts={getAllPosts}
-        />
+            )
+          })}
+          <Edit
+            show={showEdit}
+            onHide={handleCloseEdit}
+            selectId={selectId}
+            getAllPosts={getAllPosts}
+          />
       </div>
     )
   } else {
