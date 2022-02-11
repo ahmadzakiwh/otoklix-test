@@ -22,20 +22,20 @@ function Edit(props) {
   }
 
   useEffect(() => {
+    const getDataById = async () => {
+      axios
+        .get(`https://limitless-forest-49003.herokuapp.com/posts/${props.selectId}`)
+        .then((res) => {
+          const results = res.data
+          setEditPosts(results)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
     getDataById()
   }, [props])
 
-  const getDataById = async () => {
-    axios
-      .get(`https://limitless-forest-49003.herokuapp.com/posts/${props.selectId}`)
-      .then((res) => {
-        const results = res.data
-        setEditPosts(results)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  }
 
   return (
     <Modal
