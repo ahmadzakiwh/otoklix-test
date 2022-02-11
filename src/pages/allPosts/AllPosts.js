@@ -13,11 +13,13 @@ function AllPosts() {
   const handleCloseCreate = () => setShowCreate(false)
   const handleShowCreate = () => setShowCreate(true)
   const [showEdit, setShowEdit] = useState(false)
+  
+  const [selectId, setSelectId] = useState([])
   const handleShowEdit = (id) => {
+    setSelectId(id)
     setShowEdit(true)
   }
   const handleCloseEdit = () => setShowEdit(false)
-
   useEffect(() => {
     getAllPosts();
   }, []);
@@ -70,19 +72,20 @@ function AllPosts() {
         }).map((item) => {
           return (
             <div className='postsCard p-4 mt-3' key={item.id}>
-              <h6><small>id : </small>{item.id}</h6>
-                <h3>{item.title}</h3>
-                <small>{item.content}</small>
-                <div className='d-flex justify-content-end'>
-                  <button onClick={() => handleShowEdit(item.id)} className='btn btn-outline-primary me-2' type='button'>Edit</button>
-                  <button onClick={(e) => handleDelete(item.id, e)} className='btn btn-outline-danger' type='button'>Delete</button>
-                </div>
+              <h3>{item.title}</h3>
+              <small>{item.content}</small>
+              <div className='d-flex justify-content-end mt-3'>
+                <button onClick={() => handleShowEdit(item.id)} className='btn btn-outline-primary me-2' type='button'>Edit</button>
+                <button onClick={(e) => handleDelete(item.id, e)} className='btn btn-outline-danger' type='button'>Delete</button>
+              </div>
             </div>
           )
         })}
         <Edit
           show={showEdit}
           onHide={handleCloseEdit}
+          selectId={selectId}
+          getAllPosts={getAllPosts}
         />
       </div>
     )

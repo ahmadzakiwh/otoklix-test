@@ -10,24 +10,24 @@ function Edit(props) {
 
   const handleUpdate = async (e) => {
     e.preventDefault()
-    // axios
-    //   .put("https://limitless-forest-49003.herokuapp.com/posts", {
-    //     title: editPosts.title,
-    //     content: editPosts.content
-    //   })
-    //   .then(() => {
-    //     props.onHide()
-    //     props.getAllPosts()
-    //   })
+    axios
+      .put(`https://limitless-forest-49003.herokuapp.com/posts/${props.selectId}`, {
+        title: editPosts.title,
+        content: editPosts.content
+      })
+      .then((res) => {
+        props.onHide()
+        props.getAllPosts()
+      })
   }
 
   useEffect(() => {
     getDataById()
-  }, [])
+  }, [props])
 
   const getDataById = async () => {
     axios
-      .get(`https://limitless-forest-49003.herokuapp.com/posts/`)
+      .get(`https://limitless-forest-49003.herokuapp.com/posts/${props.selectId}`)
       .then((res) => {
         const results = res.data
         setEditPosts(results)
