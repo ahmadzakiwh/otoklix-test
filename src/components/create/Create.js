@@ -10,15 +10,17 @@ function Create(props) {
   });
 
   const handleSubmit = async (e) => {
+    e.preventDefault()
     axios
       .post("https://limitless-forest-49003.herokuapp.com/posts", {
         title: addPosts.title,
         content: addPosts.content
-      });
-      clear()
-      props.onHide()
-      props.getAllPosts()
-      e.preventDefault();
+      })
+      .then(() => {
+        clear()
+        props.onHide()
+        props.getAllPosts()
+      })
   }
   const clear = () => {
     setAddPosts({title: "", content: ""})
@@ -52,7 +54,8 @@ function Create(props) {
             />
           </Modal.Body>
           <Modal.Footer>
-            <button type="submit" className="btn btn-primary">Submit</button>
+          <button type='button' className="btn btn-outline-secondary" onClick={props.onHide}>Close</button>
+            <button type="submit" className="btn btn-outline-primary">Submit</button>
           </Modal.Footer>
         </form>
     </Modal>

@@ -3,14 +3,20 @@ import axios from "axios";
 import "./styles.css"
 import SearchBar from '../../components/search/SearchBar';
 import Create from '../../components/create/Create';
+import Edit from '../../components/edit/Edit';
 
 function AllPosts() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchterm, setSearchTerm] = useState("")
-  const [show, setShow] = useState(false)
-  const handleClose = () => setShow(false)
-  const handleShow = () => setShow(true)
+  const [showCreate, setShowCreate] = useState(false)
+  const handleCloseCreate = () => setShowCreate(false)
+  const handleShowCreate = () => setShowCreate(true)
+  const [showEdit, setShowEdit] = useState(false)
+  const handleShowEdit = (id) => {
+    setShowEdit(true)
+  }
+  const handleCloseEdit = () => setShowEdit(false)
 
   useEffect(() => {
     getAllPosts();
@@ -29,12 +35,16 @@ function AllPosts() {
       .finally(() => setLoading(true))
   }
 
-  function handleEdit(){
-
-  }
-
-  function handleDelete() {
-    
+  function handleDelete(id, e) {
+    e.preventDefault()
+    axios
+      .delete(`https://limitless-forest-49003.herokuapp.com/posts/${id}`)
+      .then(() => {
+        getAllPosts()
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   if (loading) {
@@ -42,10 +52,10 @@ function AllPosts() {
       <div className='container'>
         <div className='d-flex justify-content-between'>
           <SearchBar onChange={(event) => {setSearchTerm(event.target.value)}}/>
-          <button className='btn btn-add ms-3' type='button' onClick={handleShow}>ADD+</button>
+          <button className='btn btn-add ms-3' type='button' onClick={() => handleShowCreate()}>ADD+</button>
           <Create 
-            show={show}
-            onHide={handleClose}
+            show={showCreate}
+            onHide={handleCloseCreate}
             getAllPosts={getAllPosts}
           />
         </div>
@@ -64,12 +74,16 @@ function AllPosts() {
                 <h3>{item.title}</h3>
                 <small>{item.content}</small>
                 <div className='d-flex justify-content-end'>
-                  <button className='btn btn-outline-primary me-2' type='button'>Edit</button>
-                  <button className='btn btn-outline-danger' type='button'>Delete</button>
+                  <button onClick={() => handleShowEdit(item.id)} className='btn btn-outline-primary me-2' type='button'>Edit</button>
+                  <button onClick={(e) => handleDelete(item.id, e)} className='btn btn-outline-danger' type='button'>Delete</button>
                 </div>
             </div>
           )
         })}
+        <Edit
+          show={showEdit}
+          onHide={handleCloseEdit}
+        />
       </div>
     )
   } else {
